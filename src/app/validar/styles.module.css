@@ -1,0 +1,75 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #f8f9fa;
+}
+
+.card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.icone {
+  font-size: 4rem;
+}
+
+.sucesso .icone {
+  color: #28a745;
+}
+
+.erro .icone {
+  color: #dc3545;
+}
+
+.titulo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-color);
+}
+
+.mensagem {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.sucesso {
+  border-top: 4px solid #28a745;
+}
+
+.erro {
+  border-top: 4px solid #dc3545;
+}
+
+@media (max-width: 576px) {
+  .card {
+    padding: 1.5rem;
+  }
+
+  .icone {
+    font-size: 3rem;
+  }
+
+  .titulo {
+    font-size: 1.25rem;
+  }
+
+  .mensagem {
+    font-size: 1rem;
+  }
+} 

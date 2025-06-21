@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.contador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 2.5rem;
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  min-width: 200px;
+}
+
+.numero {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.texto {
+  font-size: 1rem;
+  color: var(--text-color);
+  text-align: center;
+}
+
+@media (max-width: 576px) {
+  .container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contador {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .numero {
+    font-size: 2rem;
+  }
+} 

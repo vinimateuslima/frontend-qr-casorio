@@ -1,0 +1,98 @@
+.form {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.inputGroup {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.input, .select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input {
+  flex: 2;
+  min-width: 200px;
+}
+
+.select {
+  flex: 1;
+  min-width: 150px;
+  background-color: white;
+}
+
+.input:focus, .select:focus {
+  border-color: var(--text-color);
+}
+
+.inputDisabled {
+  background-color: #f5f5f5;
+  border-color: #ddd;
+  color: #666;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.button {
+  padding: 0.75rem 2rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 120px;
+}
+
+.button:hover:not(:disabled) {
+  background-color: var(--text-color);
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.buttonSecondary {
+  background-color: #6c757d;
+}
+
+.buttonSecondary:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+@media (max-width: 1200px) {
+  .inputGroup {
+    flex-direction: column;
+  }
+
+  .input, .select {
+    width: 100%;
+  }
+
+  .buttonGroup {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .button {
+    flex: 1;
+  }
+} 
