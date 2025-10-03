@@ -16,9 +16,7 @@ async function carregarFonte() {
 }
 
 export async function gerarQRCode(senha: string): Promise<string> {
-  const baseUrl = process.env.NEXT_PUBLIC_VALIDATION_URL || 'http://localhost:3001';
-  console.log("Passou", baseUrl)
-  const url = `${baseUrl}/validar?senha=${senha}`;
+  const url = `http://localhost:3001/validar?senha=${senha}`;
   return await QRCode.toDataURL(url, {
     width: 400,
     margin: 0,

@@ -26,8 +26,17 @@ const axiosInstance = axios.create({
 });
 
 export const api = {
-  async listarConvidados(): Promise<Convidado[]> {
-    const response = await axiosInstance.get('/convidados');
+  async listarConvidados(params?: {
+    q?: string;
+    campos?: string[];
+    status?: boolean;
+  }): Promise<Convidado[]> {
+    const searchParams: Record<string, string> = {};
+    if (params?.q) searchParams.q = params.q;
+    if (params?.campos && params.campos.length > 0) searchParams.campos = params.campos.join(',');
+    if (typeof params?.status === 'boolean') searchParams.status = String(params.status);
+
+    const response = await axiosInstance.get('/convidados', { params: searchParams });
     return response.data;
   },
 

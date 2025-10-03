@@ -1,0 +1,53 @@
+.container {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.buscaContainer { display: flex; gap: 8px; }
+
+.input { flex: 1; border-color: #9FA748; color: #9FA748; }
+.input:focus { border-color: #9FA748; box-shadow: 0 0 0 0.2rem rgba(159,167,72,0.25); color: #9FA748; }
+
+.botaoFiltro { border-color: #9FA748; color: #9FA748; }
+.botaoFiltro:hover { background: rgba(159,167,72,0.08); color: #9FA748; border-color: #9FA748; }
+
+.botaoGerar { background-color: #9FA748; color: #fff; border-color: #9FA748; }
+.botaoGerar:hover { background-color: #8f9740; border-color: #8f9740; color: #fff; }
+
+.menu {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.grupo { margin-bottom: 8px; }
+.titulo { font-weight: 600; font-size: 14px; display: block; margin-bottom: 6px; }
+.checkbox { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+
+.segmented { display: inline-flex; border: 1px solid #ced4da; border-radius: 8px; overflow: hidden; }
+.segment {
+  padding: 6px 10px;
+  background: #fff;
+  border: none;
+}
+.segmentAtivo { background: #e9ecef; }
+
+/* Modal simples com estilo do site */
+.modalOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; z-index: 1050; }
+.modal { background: #fff; width: 100%; max-width: 520px; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 32px rgba(0,0,0,0.2); }
+.modalHeader { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #e9ecef; }
+.modalHeader h5 { color: #9FA748; }
+.modalBody { padding: 16px; }
+.modalFooter { padding: 12px 16px; border-top: 1px solid #e9ecef; display: flex; gap: 8px; justify-content: flex-end; }
+
+.btnPrimarioVerde { background-color: #9FA748; color: #fff; border-color: #9FA748; }
+.btnPrimarioVerde:hover { background-color: #8f9740; border-color: #8f9740; color: #fff; }
+
+
