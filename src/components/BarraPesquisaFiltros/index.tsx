@@ -5,6 +5,8 @@ import styles from './styles.module.css';
 import JSZip from 'jszip';
 import { gerarConvite } from '@/utils/convite';
 import { Convidado } from '@/services/api';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export type CampoFiltro = 'nome' | 'parentesco' | 'senha' | 'status';
 
@@ -23,6 +25,7 @@ export function BarraPesquisaFiltros({ onSearchChange, onApplyFilters, opcoesPar
   const [parentesco, setParentesco] = useState('');
   const [senha, setSenha] = useState('');
   const [statusAtivo, setStatusAtivo] = useState<'todos' | 'presentes' | 'aguardando'>('todos');
+  const [modalGerar, setModalGerar] = useState(false);
   const [confirmGerar, setConfirmGerar] = useState(false);
   const [gerando, setGerando] = useState(false);
 
@@ -42,6 +45,140 @@ export function BarraPesquisaFiltros({ onSearchChange, onApplyFilters, opcoesPar
     setModalAberto(false);
   };
 
+  const gerarPDFLista = () => {
+    const doc = new jsPDF();
+    
+    // Separar convidados e ordenar alfabeticamente
+    const parentes = convidadosParaGerar
+      .filter(c => c.parentesco !== 'Amigo(a)')
+      .sort((a, b) => a.nome.localeCompare(b.nome, 'pt', { sensitivity: 'base' }));
+    
+    const amigos = convidadosParaGerar
+      .filter(c => c.parentesco === 'Amigo(a)')
+      .sort((a, b) => a.nome.localeCompare(b.nome, 'pt', { sensitivity: 'base' }));
+    
+    let yPosition = 20;
+    
+    // 🎨 Cores do projeto
+    const titleBgColor: [number, number, number] = [159, 167, 72]; // #9FA748 - verde do projeto
+    const textColor: [number, number, number] = [79, 92, 24]; // #4F5C18
+    const headerTextColor: [number, number, number] = [255, 255, 255]; // branco
+    
+    // ======================
+    // Título principal
+    // ======================
+    doc.setFontSize(16);
+    doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+    doc.text('Lista de Convidados', 20, yPosition);
+    yPosition += 15;
+  
+    // ======================
+    // SEÇÃO PARENTES
+    // ======================
+    autoTable(doc, {
+      startY: yPosition,
+      body: [['PARENTES']],
+      styles: { 
+        fontSize: 13,
+        textColor: headerTextColor,
+        cellPadding: 5,
+        halign: 'center',
+        fontStyle: 'bold'
+      },
+      bodyStyles: { 
+        fillColor: titleBgColor,
+        textColor: headerTextColor,
+        fontStyle: 'bold'
+      },
+      margin: { left: 20, right: 20 }
+    });
+    
+    yPosition = (doc as any).lastAutoTable.finalY + 3;
+    
+    // Dados dos parentes
+    const parentesData = parentes.map(c => [c.nome, c.parentesco, c.senha, '']);
+    
+    autoTable(doc, {
+      startY: yPosition,
+      head: [['Nome', 'Parentesco', 'Senha', 'Status']],
+      body: parentesData,
+      styles: { 
+        fontSize: 9,
+        textColor: textColor,
+        cellPadding: 1.5, // 🔹 altura reduzida
+        lineColor: [200, 200, 200],
+        lineWidth: 0.3
+      },
+      headStyles: { 
+        fillColor: titleBgColor,
+        textColor: headerTextColor,
+        fontStyle: 'bold',
+        cellPadding: 2
+      },
+      alternateRowStyles: {
+        fillColor: [240, 240, 240]
+      },
+      margin: { left: 20, right: 20 }
+    });
+    
+    yPosition = (doc as any).lastAutoTable.finalY + 10;
+  
+    // ======================
+    // SEÇÃO AMIGOS
+    // ======================
+    autoTable(doc, {
+      startY: yPosition,
+      body: [['AMIGOS']],
+      styles: { 
+        fontSize: 13,
+        textColor: headerTextColor,
+        cellPadding: 5,
+        halign: 'center',
+        fontStyle: 'bold'
+      },
+      bodyStyles: { 
+        fillColor: titleBgColor,
+        textColor: headerTextColor,
+        fontStyle: 'bold'
+      },
+      margin: { left: 20, right: 20 }
+    });
+  
+    yPosition = (doc as any).lastAutoTable.finalY + 3;
+  
+    // Dados dos amigos
+    const amigosData = amigos.map(c => [c.nome, c.parentesco, c.senha, '']);
+    
+    autoTable(doc, {
+      startY: yPosition,
+      head: [['Nome', 'Parentesco', 'Senha', 'Status']],
+      body: amigosData,
+      styles: { 
+        fontSize: 9,
+        textColor: textColor,
+        cellPadding: 1.5, // 🔹 altura reduzida
+        lineColor: [200, 200, 200],
+        lineWidth: 0.3
+      },
+      headStyles: { 
+        fillColor: titleBgColor,
+        textColor: headerTextColor,
+        fontStyle: 'bold',
+        cellPadding: 2
+      },
+      alternateRowStyles: {
+        fillColor: [240, 240, 240]
+      },
+      margin: { left: 20, right: 20 }
+    });
+  
+    // ======================
+    // SALVAR PDF
+    // ======================
+    doc.save('lista-convidados.pdf');
+  };
+  
+
   return (
     <div className={styles.container}>
       <div className={styles.buscaContainer}>
@@ -55,8 +192,8 @@ export function BarraPesquisaFiltros({ onSearchChange, onApplyFilters, opcoesPar
           Filtros
         </button>
         {showGerarConvites && (
-          <button className={`btn ${styles.botaoGerar}`} onClick={() => setConfirmGerar(true)}>
-            Gerar Convites
+          <button className={`btn ${styles.botaoGerar}`} onClick={() => setModalGerar(true)}>
+            Gerar
           </button>
         )}
       </div>
@@ -98,6 +235,31 @@ export function BarraPesquisaFiltros({ onSearchChange, onApplyFilters, opcoesPar
             <div className={styles.modalFooter}>
               <button className="btn btn-secondary" onClick={() => setModalAberto(false)}>Cancelar</button>
               <button className={`btn ${styles.btnPrimarioVerde}`} onClick={aplicarFiltros}>Filtrar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {modalGerar && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <div className={styles.modalHeader}>
+              <h5 className="modal-title">Gerar</h5>
+              <button type="button" className="btn-close" onClick={() => setModalGerar(false)} aria-label="Close" />
+            </div>
+            <div className={styles.modalBody}>
+              <p>Escolha o que deseja gerar:</p>
+            </div>
+            <div className={styles.modalFooter}>
+              <button className="btn btn-secondary" onClick={() => setModalGerar(false)}>Cancelar</button>
+              <button className={`btn ${styles.btnPrimarioVerde}`} onClick={() => {
+                setModalGerar(false);
+                setConfirmGerar(true);
+              }}>Gerar Convites</button>
+              <button className={`btn ${styles.btnPrimarioVerde}`} onClick={() => {
+                setModalGerar(false);
+                gerarPDFLista();
+              }}>Gerar Lista</button>
             </div>
           </div>
         </div>
